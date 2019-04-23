@@ -58,4 +58,27 @@ class QuestionFollow
 
         questions
     end
+
+    def self.most_followed_questions(n)
+        data = QuestionsDBConnection.instance.execute(<<-SQL, n)
+        SELECT
+            *
+        FROM
+            questions
+        JOIN
+            questions_follows ON questions_follows.question_id = questions.id
+        JOIN
+            users ON questions_follows.user_id = users.id
+        GROUP BY
+            questions_follows.question_id
+        LIMIT ?
+        SQL
+
+        questions = []
+        data.each do |datum|
+            questions.push(Question.new([datum]))
+        end
+
+        questions
+    end
 end
