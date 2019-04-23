@@ -1,5 +1,7 @@
 require_relative "questions_db_connection"
 require_relative 'user'
+require_relative 'reply'
+require_relative 'question_follow'
 
 class Question
     attr_accessor :id, :title, :body, :user_id
@@ -37,6 +39,12 @@ class Question
 
         return User.new(data)
     end
+
+    def replies 
+        Reply.find_by_question_id(self.id)
+    end
+
+    def followers
+        QuestionFollow.followers_for_question_id(self.id)
+    end
 end
-
-

@@ -1,6 +1,7 @@
 require_relative "questions_db_connection"
 require_relative "question"
 require_relative "reply"
+require_relative "question_follow"
 class User
     attr_accessor :fname, :lname
     def self.all
@@ -35,6 +36,9 @@ class User
         return replies
     end
 
+    def followed_questions
+        QuestionFollow.followed_questions_for_user_id(self.id)
+    end
     protected
     attr_reader :id
 end
